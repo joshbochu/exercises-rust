@@ -1,13 +1,11 @@
+use std::iter::once;
+
 pub fn build_proverb(list: &[&str]) -> String {
     match list.len() {
-        0 => String::from(""),
-        _ => {
-            let mut lines = vec![];
-            for i in (0..list.len()-1) {
-                lines.push(format!("For want of a {} the {} was lost.\n", list[i], list[i+1]))
-            }
-            lines.push(format!("And all for the want of a {}.", list[0]));
-            lines.join("")
-        }
+        0 => String::new(),
+        _ => list.windows(2)
+                .map(|window| format!("For want of a {} the {} was lost.\n", window[0], window[1]))
+                .chain(once(format!("And all for the want of a {}.", list[0])))
+                .collect::<String>()
     }
 }
